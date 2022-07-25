@@ -109,7 +109,7 @@ class GazeboEnv:
         print("Roscore launched!")
 
         # Launch the simulation with the given launchfile name
-        rospy.init_node('gym', anonymous=True)
+        rospy.init_node('TD3')
         if launchfile.startswith("/"):
             fullpath = launchfile
         else:
