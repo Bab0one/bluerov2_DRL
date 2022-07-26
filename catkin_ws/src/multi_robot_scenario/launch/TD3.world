@@ -1,5 +1,11 @@
 <sdf version='1.6'>
   <world name='default'>
+
+    <include>
+      <uri>model://bluerov_square</uri>
+      <pose>0 0 -1.25 0 0 0</pose>
+    </include>
+
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose frame=''>0 0 10 0 -0 0</pose>
