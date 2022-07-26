@@ -112,6 +112,8 @@ class TD3(object):
     # training cycle
     def train(self, replay_buffer, iterations, batch_size=100, discount=1, tau=0.005, policy_noise=0.2,  # discount=0.99
               noise_clip=0.5, policy_freq=2):
+
+        print("Training ...")
         for it in range(iterations):
             # sample a batch from the replay buffer
             batch_states, batch_actions, batch_rewards, batch_dones, batch_next_states = replay_buffer.sample_batch(
@@ -181,7 +183,7 @@ class TD3(object):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # cuda or cpu
 env_name = "HalfCheetahBulletEnv-v0"  # Name of the PyBullet environment. The network is updated for HalfCheetahBulletEnv-v0
 seed = 0  # Random seed number
-eval_freq = 5e3  # After how many steps to perform the evaluation
+eval_freq = 500  # After how many steps to perform the evaluation #5e3
 max_ep = 500
 eval_ep = 10  # number of episodes for evaluation
 max_timesteps = 5e6  # Maximum number of steps to perform
@@ -237,6 +239,10 @@ while timestep < max_timesteps:
 
     # On termination of episode
     if done:
+        print("DONE")
+        print("timesteps_since_eval :", timesteps_since_eval)
+        #print("eval_freq :", eval_freq)
+
         if timestep != 0:
             network.train(replay_buffer, episode_timesteps, batch_size, discount, tau, policy_noise, noise_clip,
                           policy_freq)
@@ -255,6 +261,7 @@ while timestep < max_timesteps:
         episode_reward = 0
         episode_timesteps = 0
         episode_num += 1
+        print("\nEPISODE", episode_num)
 
     if expl_noise > expl_min:
         expl_noise = expl_noise - ((1 - expl_min) / expl_decay_steps)

@@ -103,15 +103,15 @@ class GazeboEnv:
         self.yaw_rate_scaler = 0.2
 
 
-        self.set_self_state = ModelState()
-        self.set_self_state.model_name = 'bluerov'
-        self.set_self_state.pose.position.x = 0.
-        self.set_self_state.pose.position.y = 0.
-        self.set_self_state.pose.position.z = 0.
-        self.set_self_state.pose.orientation.x = 0.0
-        self.set_self_state.pose.orientation.y = 0.0
-        self.set_self_state.pose.orientation.z = 0.0
-        self.set_self_state.pose.orientation.w = 1.0
+        #self.set_self_state = ModelState()
+        #self.set_self_state.model_name = 'uuv_bluerov2_heavy'
+        #self.set_self_state.pose.position.x = 0.
+        #self.set_self_state.pose.position.y = 0.
+        #self.set_self_state.pose.position.z = 0.
+        #self.set_self_state.pose.orientation.x = 0.0
+        #self.set_self_state.pose.orientation.y = 0.0
+        #self.set_self_state.pose.orientation.z = 0.0
+        #self.set_self_state.pose.orientation.w = 1.0
         self.distOld = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
         self.gaps = [[-1.6, -1.57 + 3.14 / 20]]
         for m in range(19):
@@ -185,7 +185,7 @@ class GazeboEnv:
     def odom_callback(self, od_data):
         self.last_odom = od_data
         #print(self.last_odom)
-        
+
     # Gestion des thrusters
     def set_thrust(self, value):
         value *= self.thrust_scaler
@@ -293,6 +293,7 @@ class GazeboEnv:
 
         # Calculate distance to the goal from the robot
         Dist = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
+        print("Distance to goal = ", Dist)
 
         # Calculate the angle distance between the robots heading and heading toward the goal
         skewX = self.goalX - self.odomX
@@ -416,6 +417,7 @@ class GazeboEnv:
 
         # Detect if the goal has been reached and give a large positive reward
         if Dist < 0.3:
+            print("Goal reached!")
             target = True
             done = True
             self.distOld = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
@@ -423,6 +425,7 @@ class GazeboEnv:
 
         # Detect if ta collision has happened and give a large negative reward
         if col:
+            print("Collision!")
             reward = -100
 
         toGoal = [Dist, beta2, act[0], act[1]]
@@ -432,6 +435,7 @@ class GazeboEnv:
     def reset(self):
 
         # Resets the state of the environment and returns an initial observation.
+        print("Reset ...")
         rospy.wait_for_service('/gazebo/reset_world')
         try:
             self.reset_proxy()
@@ -441,7 +445,7 @@ class GazeboEnv:
 
         angle = np.random.uniform(-np.pi, np.pi)
         quaternion = Quaternion.from_euler(0., 0., angle)
-        object_state = self.set_self_state
+        #object_state = self.set_self_state
 
         x = 0
         y = 0
@@ -450,17 +454,21 @@ class GazeboEnv:
             x = np.random.uniform(-4.5, 4.5)
             y = np.random.uniform(-4.5, 4.5)
             chk = check_pos(x, y)
-        object_state.pose.position.x = x
-        object_state.pose.position.y = y
+        #object_state.pose.position.x = x
+        #object_state.pose.position.y = y
         # object_state.pose.position.z = 0.
-        object_state.pose.orientation.x = quaternion.x
-        object_state.pose.orientation.y = quaternion.y
-        object_state.pose.orientation.z = quaternion.z
-        object_state.pose.orientation.w = quaternion.w
-        self.set_state.publish(object_state)
+        #object_state.pose.orientation.x = quaternion.x
+        #object_state.pose.orientation.y = quaternion.y
+        #object_state.pose.orientation.z = quaternion.z
+        #object_state.pose.orientation.w = quaternion.w
+        #self.set_state.publish(object_state)
 
-        self.odomX = object_state.pose.position.x
-        self.odomY = object_state.pose.position.y
+        #self.odomX = object_state.pose.position.x
+        #self.odomY = object_state.pose.position.y
+        self.odomX = x
+        self.odomY = y
+        #print("odomX = ", self.odomX)
+        #print("odomY = ", self.odomY)
 
         self.change_goal()
         self.random_box()
@@ -474,7 +482,7 @@ class GazeboEnv:
             print("/gazebo/unpause_physics service call failed")
         while data is None:
             try:
-                print("waiting for hukyo...")
+                #print("waiting for hukyo...")
                 data = rospy.wait_for_message('/bluerov/front_laser/scan', LaserScan, timeout=0.5)
             except:
                 pass
