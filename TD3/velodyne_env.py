@@ -9,7 +9,7 @@ import random
 import math
 from gazebo_msgs.msg import ModelState
 from squaternion import Quaternion
-from geometry_msgs.msg import Twist
+from std_msgs.msg import Float64
 from sensor_msgs.msg import LaserScan, PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 from nav_msgs.msg import Odometry
@@ -88,6 +88,21 @@ class GazeboEnv:
         self.last_laser = None
         self.last_odom = None
 
+        # Construction variables thrusters
+        self.thrust = 0.0
+        self.thrust_stepsize = 0.1
+        self.thrust_scaler = 0.4
+        self.lateral_thrust = 0.0
+        self.lateral_thrust_stepsize = 0.1
+        self.lateral_thrust_scaler = 0.4
+        self.vertical_thrust = 0.0
+        self.vertical_thrust_stepsize = 0.1
+        self.vertical_thrust_scaler = 0.4
+        self.yaw_rate = 0.0
+        self.yaw_rate_stepsize = 0.1
+        self.yaw_rate_scaler = 0.2
+
+
         self.set_self_state = ModelState()
         self.set_self_state.model_name = 'bluerov'
         self.set_self_state.pose.position.x = 0.
@@ -123,7 +138,12 @@ class GazeboEnv:
         self.gzclient_pid = 0
 
         # Set up the ROS publishers and subscribers
-        self.vel_pub = rospy.Publisher('/bluerov/mavros/setpoint_velocity/cmd_vel_unstamped', Twist, queue_size=10)
+        self.roll_pub = rospy.Publisher("roll", Float64, queue_size=1)
+        self.pitch_pub = rospy.Publisher("pitch", Float64, queue_size=1)
+        self.yaw_pub = rospy.Publisher("yaw", Float64, queue_size=1)
+        self.thrust_pub = rospy.Publisher("thrust", Float64, queue_size=1)
+        self.vertical_thrust_pub = rospy.Publisher("vertical_thrust",Float64,queue_size=1)
+        self.lateral_thrust_pub = rospy.Publisher("lateral_thrust",Float64,queue_size=1)
         self.set_state = rospy.Publisher('gazebo/set_model_state', ModelState, queue_size=10)
         self.unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
         self.pause = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
@@ -165,6 +185,29 @@ class GazeboEnv:
     def odom_callback(self, od_data):
         self.last_odom = od_data
         #print(self.last_odom)
+        
+    # Gestion des thrusters
+    def set_thrust(self, value):
+        value *= self.thrust_scaler
+        self.thrust = max(-1, min(1, value))
+
+    def set_yaw_rate(self, value):
+        value *= self.yaw_rate_scaler
+        self.yaw_rate = max(-1, min(1, value))
+
+    def set_vertical_thrust(self, value):
+        value *= self.vertical_thrust_scaler
+        self.vertical_thrust = max(-1, min(1, value))
+
+    def set_lateral_thrust(self, value):
+        value *= self.lateral_thrust_scaler
+        self.lateral_thrust = max(-1, min(1, value))
+
+    def publish_message(self):
+        self.thrust_pub.publish(Float64(self.thrust))
+        self.vertical_thrust_pub.publish(Float64(self.vertical_thrust))
+        self.lateral_thrust_pub.publish(Float64(self.lateral_thrust))
+        self.yaw_pub.publish(Float64(self.yaw_rate))
 
     # Detect a collision from laser data
     def calculate_observation(self, data):
@@ -184,10 +227,11 @@ class GazeboEnv:
     # Perform an action and read a new state
     def step(self, act):
         # Publish the robot action
-        vel_cmd = Twist()
-        vel_cmd.linear.x = act[0]
-        vel_cmd.angular.z = act[1]
-        self.vel_pub.publish(vel_cmd)
+        self.set_thrust(float(act[0]))
+        self.set_yaw_rate(float(act[1]))
+        rate = rospy.Rate(30.0)
+        self.publish_message()
+        rate.sleep()
 
         target = False
         rospy.wait_for_service('/gazebo/unpause_physics')

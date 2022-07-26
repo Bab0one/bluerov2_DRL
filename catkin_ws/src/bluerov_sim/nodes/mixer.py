@@ -9,9 +9,7 @@ class MixerNode():
     def __init__(self):
         rospy.init_node("mixer")
 
-        self.setpoint_pub = rospy.Publisher("mavros/setpoint_motor/setpoint",
-                                            MotorSetpoint,
-                                            queue_size=1)
+        self.setpoint_pub = rospy.Publisher("bluerov/mavros/setpoint_motor/setpoint",MotorSetpoint,queue_size=1)
 
         self.data_lock = threading.RLock()
 
