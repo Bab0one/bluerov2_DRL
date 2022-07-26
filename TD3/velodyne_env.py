@@ -248,6 +248,12 @@ class GazeboEnv:
                 dataOdom = rospy.wait_for_message('/bluerov/mavros/local_position/odom', Odometry, timeout=0.1)
             except:
                 pass
+
+        # Maintient à la bonne profondeur
+        if (dataOdom.pose.pose.position.z<-0.1):
+            #print("vertical thrust")
+            self.set_vertical_thrust(0.15)
+
         #print("data odom:")
         #print(dataOdom)
 
@@ -264,8 +270,6 @@ class GazeboEnv:
             self.pause()
         except (rospy.ServiceException) as e:
             print("/gazebo/pause_physics service call failed")
-
-
 
 
         data = self.last_laser
