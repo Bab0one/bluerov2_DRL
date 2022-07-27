@@ -1,10 +1,6 @@
 <launch>
 
   <arg name="vehicle_name" default="bluerov" />
-  <arg name="robot_name" default="bluerov" />
-  <arg name="robot_position" default="-x 0 -y 0 -z -1.0" />
-
-
 
     <!-- Load the SDF and spawn the bluerov-->
     <group ns="$(arg vehicle_name)">
@@ -12,7 +8,7 @@
         <include file="$(find bluerov_sim)/launch/spawn_vehicle.launch">
             <arg name="x" value="0" />
             <arg name="y" value="0" />
-            <arg name="z" value="-1.0" />
+            <arg name="z" value="-2.5" />
         </include>
     </group>
 
