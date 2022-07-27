@@ -164,11 +164,94 @@
 
   </model>
 
-  <model name='cross'>
+
+  <model name='cylindres'>
     <pose>0 0 -3 0 0 0</pose>
     <static>1</static>
+
+    <link name='Cylindre1'>
+      <pose frame=''>1 1 0.5 0 0 0</pose>
+      <visual name='Cylindre1_Visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.3</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Cylindre1_Collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.3</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+    <link name='Cylindre2'>
+      <pose frame=''>-1 -1.5 0.5 0 0 0</pose>
+      <visual name='Cylindre2_Visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.3</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Cylindre2_Collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.3</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+  </model>
+
+
+  <model name='cross1'>
+    <pose>-3 -3 -3 0 0 0.3</pose>
+    <static>1</static>
     <link name='Wall_5'>
-      <pose frame=''>-2.152 1.857 0 0 -0 0</pose>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <visual name='Wall_5_Visual'>
         <pose frame=''>0 0 0.5 0 -0 0</pose>
         <geometry>
@@ -204,7 +287,240 @@
     </link>
 
     <link name='Wall_6'>
-      <pose frame=''>-2.155 1.764 0 0 0 -1.5708</pose>
+      <pose frame=''>0 0 0 0 0 -1.5708</pose>
+      <visual name='Wall_6_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_6_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+  </model>
+
+  <model name='cross2'>
+    <pose> 3 2 -3 0 0 -0.5</pose>
+    <static>1</static>
+    <link name='Wall_5'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <visual name='Wall_5_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_5_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+    <link name='Wall_6'>
+      <pose frame=''>0 0 0 0 0 -1.5708</pose>
+      <visual name='Wall_6_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_6_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+  </model>
+
+
+  <model name='cross3'>
+    <pose>-2 2 -3 0 0 0</pose>
+    <static>1</static>
+    <link name='Wall_5'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <visual name='Wall_5_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_5_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+    <link name='Wall_6'>
+      <pose frame=''>0 0 0 0 0 -1.5708</pose>
+      <visual name='Wall_6_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_6_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.75 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+  </model>
+
+
+  <model name='cross4'>
+    <pose>2 -2 -3 0 0 -0.3</pose>
+    <static>1</static>
+    <link name='Wall_5'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <visual name='Wall_5_Visual'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/CeilingTiled</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='Wall_5_Collision'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>2.5 0.15 1</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+
+    <link name='Wall_6'>
+      <pose frame=''>0 0 0 0 0 -1.5708</pose>
       <visual name='Wall_6_Visual'>
         <pose frame=''>0 0 0.5 0 -0 0</pose>
         <geometry>

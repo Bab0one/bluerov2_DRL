@@ -91,7 +91,7 @@ class GazeboEnv:
         # Construction variables thrusters
         self.thrust = 0.0
         self.thrust_stepsize = 0.1
-        self.thrust_scaler = 0.4
+        self.thrust_scaler = 0.6 #0.4
         self.lateral_thrust = 0.0
         self.lateral_thrust_stepsize = 0.1
         self.lateral_thrust_scaler = 0.4
@@ -100,18 +100,18 @@ class GazeboEnv:
         self.vertical_thrust_scaler = 0.4
         self.yaw_rate = 0.0
         self.yaw_rate_stepsize = 0.1
-        self.yaw_rate_scaler = 0.2
+        self.yaw_rate_scaler = 0.1 #0.2
 
 
-        #self.set_self_state = ModelState()
-        #self.set_self_state.model_name = 'uuv_bluerov2_heavy'
-        #self.set_self_state.pose.position.x = 0.
-        #self.set_self_state.pose.position.y = 0.
-        #self.set_self_state.pose.position.z = 0.
-        #self.set_self_state.pose.orientation.x = 0.0
-        #self.set_self_state.pose.orientation.y = 0.0
-        #self.set_self_state.pose.orientation.z = 0.0
-        #self.set_self_state.pose.orientation.w = 1.0
+        self.set_self_state = ModelState()
+        self.set_self_state.model_name = 'uuv_bluerov2_heavy_0'
+        self.set_self_state.pose.position.x = 0.
+        self.set_self_state.pose.position.y = 0.
+        self.set_self_state.pose.position.z = 0.
+        self.set_self_state.pose.orientation.x = 0.0
+        self.set_self_state.pose.orientation.y = 0.0
+        self.set_self_state.pose.orientation.z = 0.0
+        self.set_self_state.pose.orientation.w = 1.0
         self.distOld = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
         self.gaps = [[-1.6, -1.57 + 3.14 / 20]]
         for m in range(19):
@@ -252,7 +252,7 @@ class GazeboEnv:
         # Maintient à la bonne profondeur
         if (dataOdom.pose.pose.position.z<-0.1):
             #print("vertical thrust")
-            self.set_vertical_thrust(0.15)
+            self.set_vertical_thrust(0.1)
 
         #print("data odom:")
         #print(dataOdom)
@@ -297,7 +297,7 @@ class GazeboEnv:
 
         # Calculate distance to the goal from the robot
         Dist = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
-        print("Distance to goal = ", Dist)
+        #print("Distance to goal = ", Dist)
 
         # Calculate the angle distance between the robots heading and heading toward the goal
         skewX = self.goalX - self.odomX
@@ -449,7 +449,7 @@ class GazeboEnv:
 
         angle = np.random.uniform(-np.pi, np.pi)
         quaternion = Quaternion.from_euler(0., 0., angle)
-        #object_state = self.set_self_state
+        object_state = self.set_self_state
 
         x = 0
         y = 0
@@ -458,19 +458,19 @@ class GazeboEnv:
             x = np.random.uniform(-4.5, 4.5)
             y = np.random.uniform(-4.5, 4.5)
             chk = check_pos(x, y)
-        #object_state.pose.position.x = x
-        #object_state.pose.position.y = y
-        # object_state.pose.position.z = 0.
-        #object_state.pose.orientation.x = quaternion.x
-        #object_state.pose.orientation.y = quaternion.y
-        #object_state.pose.orientation.z = quaternion.z
-        #object_state.pose.orientation.w = quaternion.w
-        #self.set_state.publish(object_state)
+        object_state.pose.position.x = x
+        object_state.pose.position.y = y
+        object_state.pose.position.z = -2.5
+        object_state.pose.orientation.x = quaternion.x
+        object_state.pose.orientation.y = quaternion.y
+        object_state.pose.orientation.z = quaternion.z
+        object_state.pose.orientation.w = quaternion.w
+        self.set_state.publish(object_state)
 
-        #self.odomX = object_state.pose.position.x
-        #self.odomY = object_state.pose.position.y
-        self.odomX = x
-        self.odomY = y
+        self.odomX = object_state.pose.position.x
+        self.odomY = object_state.pose.position.y
+        #self.odomX = x
+        #self.odomY = y
         #print("odomX = ", self.odomX)
         #print("odomY = ", self.odomY)
 
@@ -562,7 +562,7 @@ class GazeboEnv:
             box_state.model_name = name
             box_state.pose.position.x = x
             box_state.pose.position.y = y
-            box_state.pose.position.z = 0.
+            box_state.pose.position.z = -2.6
             box_state.pose.orientation.x = 0.0
             box_state.pose.orientation.y = 0.0
             box_state.pose.orientation.z = 0.0
