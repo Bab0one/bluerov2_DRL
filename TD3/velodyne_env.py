@@ -298,6 +298,7 @@ class GazeboEnv:
         # Calculate distance to the goal from the robot
         Dist = math.sqrt(math.pow(self.odomX - self.goalX, 2) + math.pow(self.odomY - self.goalY, 2))
         #print("Distance to goal = ", Dist)
+        #print("X: ",self.odomX," Y: ",self.odomY)
 
         # Calculate the angle distance between the robots heading and heading toward the goal
         skewX = self.goalX - self.odomX
@@ -318,90 +319,6 @@ class GazeboEnv:
         if beta2 < -np.pi:
             beta2 = -np.pi - beta2
             beta2 = np.pi - beta2
-
-
-
-        # Publish visual data in Rviz
-        markerArray = MarkerArray()
-        marker = Marker()
-        marker.header.frame_id = "odom"
-        marker.type = marker.CYLINDER
-        marker.action = marker.ADD
-        marker.scale.x = 0.1
-        marker.scale.y = 0.1
-        marker.scale.z = 0.01
-        marker.color.a = 1.0
-        marker.color.r = 0.0
-        marker.color.g = 1.0
-        marker.color.b = 0.0
-        marker.pose.orientation.w = 1.0
-        marker.pose.position.x = self.goalX
-        marker.pose.position.y = self.goalY
-        marker.pose.position.z = 0
-
-        markerArray.markers.append(marker)
-
-        self.publisher.publish(markerArray)
-
-        markerArray2 = MarkerArray()
-        marker2 = Marker()
-        marker2.header.frame_id = "odom"
-        marker2.type = marker.CUBE
-        marker2.action = marker.ADD
-        marker2.scale.x = abs(act[0])
-        marker2.scale.y = 0.1
-        marker2.scale.z = 0.01
-        marker2.color.a = 1.0
-        marker2.color.r = 1.0
-        marker2.color.g = 0.0
-        marker2.color.b = 0.0
-        marker2.pose.orientation.w = 1.0
-        marker2.pose.position.x = 5
-        marker2.pose.position.y = 0
-        marker2.pose.position.z = 0
-
-        markerArray2.markers.append(marker2)
-        self.publisher2.publish(markerArray2)
-
-        markerArray3 = MarkerArray()
-        marker3 = Marker()
-        marker3.header.frame_id = "odom"
-        marker3.type = marker.CUBE
-        marker3.action = marker.ADD
-        marker3.scale.x = abs(act[1])
-        marker3.scale.y = 0.1
-        marker3.scale.z = 0.01
-        marker3.color.a = 1.0
-        marker3.color.r = 1.0
-        marker3.color.g = 0.0
-        marker3.color.b = 0.0
-        marker3.pose.orientation.w = 1.0
-        marker3.pose.position.x = 5
-        marker3.pose.position.y = 0.2
-        marker3.pose.position.z = 0
-
-        markerArray3.markers.append(marker3)
-        self.publisher3.publish(markerArray3)
-
-        markerArray4 = MarkerArray()
-        marker4 = Marker()
-        marker4.header.frame_id = "odom"
-        marker4.type = marker.CUBE
-        marker4.action = marker.ADD
-        marker4.scale.x = 0.1  # abs(act2)
-        marker4.scale.y = 0.1
-        marker4.scale.z = 0.01
-        marker4.color.a = 1.0
-        marker4.color.r = 1.0
-        marker4.color.g = 0.0
-        marker4.color.b = 0.0
-        marker4.pose.orientation.w = 1.0
-        marker4.pose.position.x = 5
-        marker4.pose.position.y = 0.4
-        marker4.pose.position.z = 0
-
-        markerArray4.markers.append(marker4)
-        self.publisher4.publish(markerArray4)
 
         '''Bunch of different ways to generate the reward'''
 
@@ -541,6 +458,19 @@ class GazeboEnv:
             self.goalX = self.odomX + random.uniform(self.upper, self.lower)
             self.goalY = self.odomY + random.uniform(self.upper, self.lower)
             gOK = check_pos(self.goalX, self.goalY)
+
+        if gOK:
+            box_state = ModelState()
+            box_state.model_name = 'goal_box'
+            box_state.pose.position.x = self.goalX
+            box_state.pose.position.y = self.goalY
+            box_state.pose.position.z = -2.4
+            box_state.pose.orientation.x = 0.0
+            box_state.pose.orientation.y = 0.0
+            box_state.pose.orientation.z = 0.0
+            box_state.pose.orientation.w = 1.0
+            self.set_state.publish(box_state)
+
 
     # Randomly change the location of the boxes in the environment on each reset to randomize the training environment
     def random_box(self):

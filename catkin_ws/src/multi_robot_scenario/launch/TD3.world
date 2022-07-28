@@ -1851,6 +1851,40 @@
         <gravity>1</gravity>
       </link>
     </model>
+    <model name='goal_box'>
+      <pose frame=''>3.96847 0.977565 -2.85 0 -0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>2</mass>
+          <inertia>
+            <ixx>0.0416667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0566667</iyy>
+            <iyz>0</iyz>
+            <izz>0.0683333</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <pose frame=''>0 0 -0.15 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.4 0.4 0.4</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+          <transparency>0.5</transparency>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>0</gravity>
+      </link>
+    </model>
     <model name='cardboard_box_0'>
       <pose frame=''>3.96847 0.977565 -2.85 0 -0 0</pose>
       <link name='link'>

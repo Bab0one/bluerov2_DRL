@@ -896,7 +896,7 @@
             <hil_state_level>false</hil_state_level>
             <vehicle_is_tailsitter>false</vehicle_is_tailsitter>
             <send_vision_estimation>true</send_vision_estimation>
-            <send_odometry>false</send_odometry>
+            <send_odometry>true</send_odometry>
             <enable_lockstep>true</enable_lockstep>
             <use_tcp>true</use_tcp>
             <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>
