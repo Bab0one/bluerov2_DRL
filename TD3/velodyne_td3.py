@@ -183,7 +183,7 @@ class TD3(object):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # cuda or cpu
 env_name = "HalfCheetahBulletEnv-v0"  # Name of the PyBullet environment. The network is updated for HalfCheetahBulletEnv-v0
 seed = 0  # Random seed number
-eval_freq = 500  # After how many steps to perform the evaluation #5e3
+eval_freq = 2000  # After how many steps to perform the evaluation #5e3
 max_ep = 500
 eval_ep = 10  # number of episodes for evaluation
 max_timesteps = 5e6  # Maximum number of steps to perform
